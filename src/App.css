@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.texture-bg {
+    background-image: url('/bg.png');
+    background-position: center center;
+    background-size: cover;
+}
+
+.quotation-marks::before {
+    content: "\201C";
+    /* Left Double Quotation Mark */
+}
+
+.quotation-marks::after {
+    content: "\201D";
+    /* Right Double Quotation Mark */
+}
