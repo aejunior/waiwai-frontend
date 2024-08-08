@@ -1,6 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,500;1,9..40,500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    font-family: 'DM Sans', sans-serif;
+    font-size: large;
+}
 
 .texture-bg {
     background-image: url('/bg.png');

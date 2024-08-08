@@ -1,16 +1,11 @@
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Badge
-} from "reactstrap";
+import Badge from './Badge';
 import BookIcon from './Icons/BookIcon';
 import EnvelopeIcon from './Icons/EnvelopeIcon';
 import GitHubIcon from './Icons/GitHubIcon';
 import LinkedInIcon from './Icons/LinkedInIcon';
 import { MemberType, ContactType, SocialEnum, RoleEnum } from './types';
 
+import { v4 as uuidv4 } from 'uuid';
 type MemberCardProps = {
   member: MemberType
 }
@@ -42,78 +37,92 @@ function getSocial(social: ContactType) {
 
   }
 }
-
 function getRole(role: RoleEnum) {
+  let keyBadge = uuidv4()
   switch (role) {
     case RoleEnum.PROFESSOR:
       return (<Badge
-        className="text-dark"
-        color="light"
-      >
-        Professor</Badge>)
+        key={keyBadge}
+        textBadge={'Professor(a)'}
+        color="red" />)
 
     case RoleEnum.STUDENT:
       return (<Badge
-        className="text-dark"
-        color="light"
-      >
-        Estudante</Badge>)
+        key={keyBadge}
+        textBadge={'Estudante'}
+        color="yellow" />)
     case RoleEnum.RESEARCHER:
       return (<Badge
-        className="text-dark"
-        color="light"
-      >
-        Pesquisador</Badge>)
+        key={keyBadge}
+        textBadge={'Pesquisador(a)'}
+        color="green" />)
     case RoleEnum.DEVELOPER:
       return (<Badge
-        className="text-dark"
-        color="light"
-      >
-        Desenvolvedor</Badge>)
+        key={keyBadge}
+        textBadge={'Desenvolvedor'}
+        color="blue" />)
     case RoleEnum.MANAGER:
       return (<Badge
-        className="text-dark"
-        color="light"
-      >
-        Gerente</Badge>)
+        key={keyBadge}
+        textBadge={'Gerente'}
+        color="indigo" />)
     case RoleEnum.DESIGNER:
       return (<Badge
-        className="text-dark"
-        color="light"
-      >
-        Designer</Badge>)
+        key={keyBadge}
+        textBadge={'Designer'}
+        color="purple" />)
     case RoleEnum.INTERDISCIPLINARY:
       return (<Badge
-        className="text-dark"
-        color="light"
-      >
-        Interdisciplinar</Badge>)
+        key={keyBadge}
+        textBadge={'Equipe Interdisciplinar'}
+        color="pink" />)
   }
 }
 
 
 const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
-  return (
-    <Card className="no-border-card">
-      <CardBody>
-        <img
-          alt={member.fullName}
-          src={member.avatar}
-          width={160}
-          height={150}
-          className="mb-2"
-        />
-        <CardTitle tag="h5">{member.fullName}</CardTitle>
-        <CardSubtitle className="mb-2 text-muted" tag="h6">
-          <div> {member.roles.map((role) => getRole(role))}</div>
-        </CardSubtitle>
 
-        <ul className="list-inline">
-          {member.contacts.map((social) => (<li className="list-inline-item">{getSocial(social)}</li>))}
-        </ul>
-      </CardBody>
-    </Card>
+  return (
+    <>
+      <div className="w-full max-w-xs bg-white border rounded-lg shadow">
+        <div className="flex flex-col items-center py-5" >
+          <img
+            className="w-24 h-24 mb-3 rounded-full shadow-lg"
+            src={member.avatar}
+            alt={member.fullName}
+          />
+          <h5 className="mb-1 text-xl font-medium text-gray-900 ">
+            {member.fullName}
+          </h5>
+          <div className='flex gap-1 mb-3'> {member.roles.map((role) => getRole(role))}</div>
+          <div className="flex gap-4">
+            {member.contacts.map((social) => {
+              let keySocial = uuidv4()
+              return <div className="flex-none" key={keySocial}>{getSocial(social)}</div>
+            })}
+          </div>
+        </div>
+      </div></>
   );
 };
 
+// <Card className="no-border-card">
+//   <CardBody>
+//     <img
+//       alt={member.fullName}
+//       src={member.avatar}
+//       width={160}
+//       height={150}
+//       className="mb-2"
+//     />
+//     <CardTitle tag="h5">{member.fullName}</CardTitle>
+//     <CardSubtitle className="mb-2 text-muted" tag="h6">
+//       <div> {member.roles.map((role) => getRole(role))}</div>
+//     </CardSubtitle>
+
+//     <ul className="list-inline">
+//       {member.contacts.map((social) => (<li className="list-inline-item">{getSocial(social)}</li>))}
+//     </ul>
+//   </CardBody>
+// </Card>
 export default MemberCard;

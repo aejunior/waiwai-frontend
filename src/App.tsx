@@ -1,6 +1,6 @@
 // import { Routes } from './routes';
-import AuthProvider from './provider/authProvider';
-import ThemeProvider from './provider/themeProvider';
+// import AuthProvider from './provider/authProvider';
+// import ThemeProvider from './provider/themeProvider';
 import Routes from './routes';
 import './App.css'
 

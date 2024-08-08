@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { MemberType, SocialEnum, RoleEnum } from './types';
-import {
-    Row,
-    Col
-} from "reactstrap";
+
 import MemberCard from './MemberCard';
+
+import { v4 as uuidv4 } from 'uuid';
 
 const members: MemberType[] = [
     {
-        id: '1',
+        id: 1,
         fullName: 'Crystian C. Printes',
         avatar: '/team/crystian.png',
         roles: [RoleEnum.DEVELOPER, RoleEnum.STUDENT],
@@ -23,7 +22,7 @@ const members: MemberType[] = [
             }]
     },
     {
-        id: '2',
+        id: 2,
         fullName: 'Marcos V. Printes',
         avatar: '/team/marcos.png',
         roles: [RoleEnum.DEVELOPER, RoleEnum.STUDENT],
@@ -38,7 +37,7 @@ const members: MemberType[] = [
             }]
     },
     {
-        id: '3',
+        id: 3,
         fullName: 'Débora Marcião dos Santos',
         avatar: '/team/debora.png',
         roles: [RoleEnum.STUDENT, RoleEnum.DESIGNER],
@@ -53,7 +52,7 @@ const members: MemberType[] = [
             }]
     },
     {
-        id: '4',
+        id: 4,
         fullName: 'Camila Pereira Jácome',
         avatar: '/team/camila.png',
         roles: [RoleEnum.PROFESSOR, RoleEnum.RESEARCHER],
@@ -68,10 +67,10 @@ const members: MemberType[] = [
             }]
     },
     {
-        id: '5',
+        id: 5,
         fullName: 'Flávia Pessoa Monteiro',
         avatar: '/team/flavia.png',
-        roles: [RoleEnum.PROFESSOR, RoleEnum.RESEARCHER],
+        roles: [RoleEnum.PROFESSOR, RoleEnum.RESEARCHER, RoleEnum.MANAGER],
         contacts: [
             {
                 value: 'http://lattes.cnpq.br/3434022917410660',
@@ -83,7 +82,7 @@ const members: MemberType[] = [
             }]
     },
     {
-        id: '6',
+        id: 6,
         fullName: 'Dávia Marciana Talgatti',
         avatar: '/team/davia.png',
         roles: [RoleEnum.PROFESSOR, RoleEnum.RESEARCHER],
@@ -94,10 +93,10 @@ const members: MemberType[] = [
             }]
     },
     {
-        id: '7',
+        id: 7,
         fullName: 'Mazzile Tavares Rodrigues',
         avatar: '/team/mazzile.png',
-        roles: [RoleEnum.STUDENT, RoleEnum.RESEARCHER],
+        roles: [RoleEnum.STUDENT, RoleEnum.DESIGNER],
         contacts: [
             {
                 value: 'http://lattes.cnpq.br/1803108295629145',
@@ -109,10 +108,10 @@ const members: MemberType[] = [
             }]
     },
     {
-        id: '8',
+        id: 8,
         fullName: 'Rui Harayama',
         avatar: '/team/rui.png',
-        roles: [RoleEnum.STUDENT, RoleEnum.RESEARCHER],
+        roles: [RoleEnum.PROFESSOR, RoleEnum.RESEARCHER],
         contacts: [
             {
                 value: 'rui.harayama@gmail.com',
@@ -120,42 +119,42 @@ const members: MemberType[] = [
             }]
     },
     {
-        id: '9',
+        id: 9,
         fullName: 'Carolina Wai Wai',
         avatar: '/team/carolina.png',
         roles: [RoleEnum.INTERDISCIPLINARY],
         contacts: []
     },
     {
-        id: '10',
+        id: 10,
         fullName: 'Elaíde Wai Wai',
         avatar: '/team/elaide.png',
         roles: [RoleEnum.INTERDISCIPLINARY],
         contacts: []
     },
     {
-        id: '11',
+        id: 11,
         fullName: 'Ediane Santos',
         avatar: '/team/ediane.png',
         roles: [RoleEnum.INTERDISCIPLINARY],
         contacts: []
     },
     {
-        id: '12',
+        id: 12,
         fullName: 'Izabelle Sena',
         avatar: '/team/izabelle.png',
         roles: [RoleEnum.INTERDISCIPLINARY],
         contacts: []
     },
     {
-        id: '13',
+        id: 13,
         fullName: 'Ronildo Wai Wai',
         avatar: '/team/ronildo.png',
         roles: [RoleEnum.INTERDISCIPLINARY],
         contacts: []
     },
     {
-        id: '14',
+        id: 14,
         fullName: 'Terezinha Lira',
         avatar: '/team/terezinha.png',
         roles: [RoleEnum.INTERDISCIPLINARY],
@@ -163,13 +162,19 @@ const members: MemberType[] = [
     }
 ]
 
-const Members: React.FC = () => {
-    return (<Row xs="3">
-        {members.map((member) => {
+function renderMembers(members: MemberType[]) {
+    return members.map((member) => {
+        return (<MemberCard key={member.id} member={member} />)
+    })
+}
 
-            return (<Col>   <MemberCard member={member}></MemberCard></Col>)
-        })}
-    </Row>);
+const Members: React.FC = () => {
+    const listMembers = useMemo(() => renderMembers(members), [members]);
+    return (
+        <div className="grid grid-cols-4 grid-flow-row gap-4 place-items-center">
+            {listMembers}
+        </div>
+    );
 }
 
 

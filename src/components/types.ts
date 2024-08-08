@@ -23,7 +23,7 @@ export enum RoleEnum {
 
 
 export type MemberType = {
-    id: string;
+    id: number;
     fullName: string;
     avatar: string;
     roles: RoleEnum[];
