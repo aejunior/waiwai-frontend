@@ -1,5 +1,5 @@
-import { createContext } from 'react';
-import { AuthContextType } from './types';
+import { createContext } from "react";
+import { AuthContextType } from "../types";
 
 const AuthContext = createContext<AuthContextType>({
     data: {
@@ -8,8 +8,8 @@ const AuthContext = createContext<AuthContextType>({
         accessToken: null,
         refreshToken: null,
     },
-    login: () => { },
-    logout: () => { },
+    login: () => {},
+    logout: () => {},
 });
 
 export default AuthContext;

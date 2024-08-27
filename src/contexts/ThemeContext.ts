@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import { EnumTheme, ThemeContextType } from "./types";
+import { EnumTheme, ThemeContextType } from "@/types/themeTypes";
 
 const ThemeContext = createContext<ThemeContextType>({
     themeMode: EnumTheme.LIGHT,
-    toggleThemeMode: () => { },
+    toggleThemeMode: () => {},
 });
 
 export default ThemeContext;

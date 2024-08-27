@@ -1,11 +1,8 @@
-import axios, { AxiosResponse } from 'axios';
-import AuthContext from '../contexts/AuthContext';
-import { useContext } from 'react';
+import axios, { AxiosResponse } from "axios";
+import AuthContext from "../contexts/AuthContext";
+import { useContext } from "react";
 
-
-const isProd = import.meta.env.PROD;
-const baseURL = isProd?.BASE_URL;
-
+const baseURL = import.meta.env.BASE_URL;
 
 const AxiosClient = () => {
     const authContext = useContext(AuthContext);
@@ -14,14 +11,13 @@ const AxiosClient = () => {
         baseURL: baseURL,
         headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*",
         },
     });
 
     AxiosInstance.interceptors.request.use((request) => {
         if (!request.headers?.Authorization && authContext.data.accessToken)
             request.headers.Authorization = `Bearer ${authContext.data.accessToken}`;
-
         return request;
     });
 
@@ -30,8 +26,8 @@ const AxiosClient = () => {
         async (error) => {
             if (
                 error.response?.status === 401 &&
-                !error.config?.headers["NO_RETRY_HEADER"] &&
-                authContext.data.refreshToken
+                !error.config?.headers["NO_RETRY_HEADER"]
+                //  && authContext.data.refreshToken
             ) {
                 const config = error?.config;
 
@@ -68,7 +64,6 @@ const AxiosClient = () => {
 };
 
 export default AxiosClient;
-
 
 // class WaiwaiApi {
 
@@ -159,7 +154,7 @@ export default AxiosClient;
 
 //     async postAttachmentByWordId(): Promise<any> { }
 
-//     // Anexos 
+//     // Anexos
 
 //     async getAttachment(): Promise<any> { }
 
