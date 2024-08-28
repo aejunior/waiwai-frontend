@@ -27,9 +27,6 @@ jobs:
         
       - name: Build project
         run: npm run build
-
-      - name: Test Secret
-        run: echo ${{ secrets.FTP_SERVER }}
         
       - name: Deploy to Hostinger 
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
