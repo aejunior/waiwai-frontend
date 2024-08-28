@@ -25,6 +25,14 @@ jobs:
       - name: Install dependencies
         uses: bahmutov/npm-install@v1   
         
+      - name: Save environment variables
+        run:
+          echo "VITE_APP_TITLE=${{ secrets.APP_TITLE }}" >> ./.env.production &&
+          echo "BASE_URL=${{ secrets.API_URL }}" >> ./.env.production
+      
+      - name: Test environment variables
+        run: cat ./.env.production
+
       - name: Build project
         run: npm run build
         
