@@ -1,13 +1,12 @@
-import React from "react";
 import Badge from "./Badge";
-import BookIcon, EnvelopeIcon, GitHubIcon, LinkedInIcon from "@/icons";
+import { BookIcon, EnvelopeIcon, GitHubIcon, LinkedInIcon } from "@/icons";
 
 import {
     MemberType,
     ContactType,
     SocialEnum,
     RoleEnum,
-} from "@types/memberTypes";
+} from "@/types/memberTypes";
 
 import { v4 as uuidv4 } from "uuid";
 type MemberCardProps = {

@@ -1,12 +1,12 @@
 import { useLocation, Link } from "react-router-dom";
-import { SetStateAction, useEffect, useState, useContext } from "react";
-import ThemeToggler from "./ThemeToggler";
+import { SetStateAction, useEffect, useState } from "react";
+// import ThemeToggler from "./ThemeToggler";
 import { pathConstants } from "@/constraints";
-import { ThemeContext } from "@/contexts";
+// import { ThemeContext } from "@/contexts";
 import { RouteType } from "@/types";
 
 const Header = () => {
-    const { themeMode } = useContext(ThemeContext);
+    // const { themeMode } = useContext(ThemeContext);
 
     // Navbar toggle
     const [navbarOpen, setNavbarOpen] = useState(false);
@@ -108,7 +108,7 @@ const Header = () => {
                                     <ul className="block lg:flex lg:space-x-12">
                                         {Object.entries(pathConstants)
                                             .filter(
-                                                ([key, value]) => value.navbar
+                                                ([_, value]) => value.navbar
                                             )
                                             .sort(
                                                 (a, b) =>
@@ -120,6 +120,7 @@ const Header = () => {
                                                     pathConstants[
                                                         key as keyof RouteType
                                                     ];
+
                                                 return (
                                                     <li
                                                         key={index}
@@ -133,8 +134,8 @@ const Header = () => {
                                                                 className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
                                                                     location.pathname ===
                                                                     menuItem.path
-                                                                        ? "text-primary dark:text-white"
-                                                                        : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white"
+                                                                        ? "text-primary dark:text-white border-b border-primary dark:border-primary"
+                                                                        : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white border-b border-white"
                                                                 }`}
                                                             >
                                                                 {menuItem.text}
@@ -167,7 +168,7 @@ const Header = () => {
                                                                         </svg>
                                                                     </span>
                                                                 </p>
-                                                                <div
+                                                                {/* <div
                                                                     className={`submenu relative left-0 top-full rounded-sm bg-white transition-[top] duration-300 group-hover:opacity-100 dark:bg-dark lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${
                                                                         openIndex ===
                                                                         index
@@ -175,7 +176,7 @@ const Header = () => {
                                                                             : "hidden"
                                                                     }`}
                                                                 >
-                                                                    {/* {menuItem.submenu.map(
+                                                                     {menuItem.submenu.map(
                                                                 (
                                                                     submenuItem,
                                                                     index
@@ -194,8 +195,8 @@ const Header = () => {
                                                                         }
                                                                     </Link>
                                                                 )
-                                                            )} */}
-                                                                </div>
+                                                            )} 
+                                                                </div>*/}
                                                             </>
                                                         )}
                                                     </li>

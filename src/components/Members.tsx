@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { MemberType, SocialEnum, RoleEnum } from "@/types/memberTypes";
 
 import MemberCard from "@/components/MemberCard";

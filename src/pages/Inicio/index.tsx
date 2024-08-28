@@ -1,6 +1,3 @@
-import React from "react";
-import Badge from "@/components/Badge";
-
 const Inicio: React.FC = () => {
     return (
         <div>

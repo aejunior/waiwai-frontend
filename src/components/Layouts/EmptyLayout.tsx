@@ -1,4 +1,3 @@
-import React, { ReactNode } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "@/components/Layouts/Header";
 import Footer from "@/components/Layouts/Footer";

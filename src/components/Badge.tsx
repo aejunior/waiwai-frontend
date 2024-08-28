@@ -1,4 +1,3 @@
-import React from "react";
 import { BadgeProps } from "@/types/memberTypes";
 
 const colors = {
