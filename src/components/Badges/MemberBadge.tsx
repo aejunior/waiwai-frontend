@@ -11,7 +11,7 @@ const colors = {
     pink: { text: "700", ring: "700/10" },
 };
 
-const Badge: React.FC<BadgeProps> = ({ textBadge, color = "red" }) => {
+const MemberBadge: React.FC<BadgeProps> = ({ textBadge, color = "red" }) => {
     const bgBadge: string = `bg-${color}-50`;
     const textColorBadge: string = `text-${color}-${colors[color]["text"]}`;
     const ringBadge: string = `ring-${color}-${colors[color]["ring"]}`;
@@ -21,4 +21,4 @@ const Badge: React.FC<BadgeProps> = ({ textBadge, color = "red" }) => {
     return <span className={colorBadge}>{textBadge}</span>;
 };
 
-export default Badge;
+export default MemberBadge;

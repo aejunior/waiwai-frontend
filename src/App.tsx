@@ -2,7 +2,7 @@
 import { ThemeContext } from "@/contexts";
 import { useReadFromLocalStorage, useLocalStorage } from "@/hooks";
 import { EnumTheme } from "./types/themeTypes";
-import Routes from "./routes";
+import Routes from "@/routes";
 import "./App.css";
 
 function App() {

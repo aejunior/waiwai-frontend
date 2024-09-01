@@ -1,9 +1,18 @@
-const PlayStoreGetInOn = (): JSX.Element => (
-    <a
+import styled from "styled-components";
+
+const Anchor = styled.a`
+    &:focus,
+    &:active {
+        box-shadow: none;
+    }
+`;
+
+const PlayStoreGetInOn: React.FC = (): JSX.Element => (
+    <Anchor
         href="https://play.google.com/store/apps/details?id=com.ufopa.dicionario.waiwai"
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+        className="w-full sm:w-auto bg-primary hover:bg--700 focus:ring-4 focus:outline-none focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
     >
         <svg
             className="me-3 w-7 h-7"
@@ -21,11 +30,11 @@ const PlayStoreGetInOn = (): JSX.Element => (
             ></path>
         </svg>
         <div className="text-left rtl:text-right">
-            <div className="mb-1 text-xs">Get in on</div>
+            <div className="mb-1 text-xs">Comece a usar</div>
             <div className="-mt-1 font-sans text-sm font-semibold">
-                Google Play
+                Obtenha na Google Play
             </div>
         </div>
-    </a>
+    </Anchor>
 );
 export default PlayStoreGetInOn;

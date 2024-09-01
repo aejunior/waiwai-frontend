@@ -1,8 +1,20 @@
+import {
+    Application,
+    Collaborators,
+    Motivation,
+    Products,
+    Purpose,
+} from "@/pages/Inicio/components";
+
 const Inicio: React.FC = () => {
     return (
-        <div>
-            <h1>Início</h1>
-        </div>
+        <>
+            <Application />
+            <Motivation />
+            <Purpose />
+            <Products />
+            <Collaborators />
+        </>
     );
 };
 

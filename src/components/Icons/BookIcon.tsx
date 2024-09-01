@@ -1,4 +1,4 @@
-const BookIcon = (): JSX.Element => (
+const BookIcon: React.FC = (): JSX.Element => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 448 512"

@@ -1,5 +1,5 @@
+import { MemberType, RoleEnum, SocialEnum } from "@/types/memberTypes";
 import { useMemo } from "react";
-import { MemberType, SocialEnum, RoleEnum } from "@/types/memberTypes";
 
 import MemberCard from "@/components/MemberCard";
 
@@ -27,7 +27,7 @@ const members: MemberType[] = [
         roles: [RoleEnum.DEVELOPER, RoleEnum.STUDENT],
         contacts: [
             {
-                value: "https://br.linkedin.com/in/marcos-vinicius-de-castro-printes-b22442201",
+                value: "https://www.linkedin.com/in/marcos-vinicius-de-castro-printes-b22442201",
                 typeContact: SocialEnum.LINKEDIN,
             },
             {
@@ -100,7 +100,7 @@ const members: MemberType[] = [
         id: 7,
         fullName: "Mazzile Tavares Rodrigues",
         avatar: "/team/mazzile.png",
-        roles: [RoleEnum.STUDENT, RoleEnum.DESIGNER],
+        roles: [RoleEnum.DESIGNER],
         contacts: [
             {
                 value: "http://lattes.cnpq.br/1803108295629145",
@@ -175,11 +175,11 @@ function renderMembers(members: MemberType[]) {
 }
 
 const Members: React.FC = () => {
-    const listMembers = useMemo(() => renderMembers(members), [members]);
+    const listMembers = useMemo(() => renderMembers(members), []);
     return (
-        <div className="grid grid-cols-4 grid-flow-row gap-4 place-items-center">
+        <ul className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             {listMembers}
-        </div>
+        </ul>
     );
 };
 

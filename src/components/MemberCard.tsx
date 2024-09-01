@@ -1,123 +1,108 @@
-import Badge from "./Badge";
-import { BookIcon, EnvelopeIcon, GitHubIcon, LinkedInIcon } from "@/icons";
+import { EnvelopeIcon, GitHubIcon, LattesIcon, LinkedInIcon } from "@/icons";
 
-import {
-    MemberType,
-    ContactType,
-    SocialEnum,
-    RoleEnum,
-} from "@/types/memberTypes";
+import { ContactType, MemberType, SocialEnum } from "@/types/memberTypes";
 
 import { v4 as uuidv4 } from "uuid";
-type MemberCardProps = {
-    member: MemberType;
-};
 
-function getSocial(social: ContactType) {
+function getSocialBadge(social: ContactType, key: string): React.ReactNode {
     switch (social.typeContact) {
         case SocialEnum.EMAIL:
             return (
-                <a href={`mailto:${social.value}`}>
+                <a href={`mailto:${social.value}`} key={key}>
                     <EnvelopeIcon />
                 </a>
             );
         case SocialEnum.GITHUB:
             return (
-                <a href={social.value} target="_blank" rel="noreferrer">
+                <a
+                    href={social.value}
+                    key={key}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-slate-400"
+                >
                     <GitHubIcon />
                 </a>
             );
         case SocialEnum.LINKEDIN:
             return (
-                <a href={social.value} target="_blank" rel="noreferrer">
+                <a
+                    href={social.value}
+                    key={key}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-slate-400"
+                >
                     <LinkedInIcon />
                 </a>
             );
         case SocialEnum.LATTES:
             return (
-                <a href={social.value} target="_blank" rel="noreferrer">
-                    <BookIcon />
+                <a
+                    href={social.value}
+                    key={key}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-slate-400"
+                >
+                    <LattesIcon />
                 </a>
             );
     }
 }
-function getRole(role: RoleEnum): React.ReactNode {
-    const keyBadge = uuidv4();
-    switch (role) {
-        case RoleEnum.PROFESSOR:
-            return (
-                <Badge key={keyBadge} textBadge={"Professor(a)"} color="red" />
-            );
 
-        case RoleEnum.STUDENT:
-            return (
-                <Badge key={keyBadge} textBadge={"Estudante"} color="yellow" />
-            );
-        case RoleEnum.RESEARCHER:
-            return (
-                <Badge
-                    key={keyBadge}
-                    textBadge={"Pesquisador(a)"}
-                    color="green"
-                />
-            );
-        case RoleEnum.DEVELOPER:
-            return (
-                <Badge
-                    key={keyBadge}
-                    textBadge={"Desenvolvedor"}
-                    color="blue"
-                />
-            );
-        case RoleEnum.MANAGER:
-            return (
-                <Badge key={keyBadge} textBadge={"Gerente"} color="indigo" />
-            );
-        case RoleEnum.DESIGNER:
-            return (
-                <Badge key={keyBadge} textBadge={"Designer"} color="purple" />
-            );
-        case RoleEnum.INTERDISCIPLINARY:
-            return (
-                <Badge
-                    key={keyBadge}
-                    textBadge={"Equipe Interdisciplinar"}
-                    color="pink"
-                />
-            );
-    }
-}
+type MemberCardProps = {
+    member: MemberType;
+};
 
 const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
     return (
-        <>
-            <div className="w-full max-w-xs bg-white border rounded-lg shadow">
-                <div className="flex flex-col items-center py-5">
-                    <img
-                        className="w-24 h-24 mb-3 rounded-full shadow-lg"
-                        src={member.avatar}
-                        alt={member.fullName}
-                    />
-                    <h5 className="mb-1 text-xl font-medium text-gray-900 ">
-                        {member.fullName}
-                    </h5>
-                    <div className="flex gap-1 mb-3">
-                        {" "}
-                        {member.roles.map((role: RoleEnum) => getRole(role))}
-                    </div>
-                    <div className="flex gap-4">
-                        {member.contacts.map((social: ContactType) => {
-                            const keySocial = uuidv4();
-                            return (
-                                <div className="flex-none" key={keySocial}>
-                                    {getSocial(social)}
-                                </div>
-                            );
-                        })}
-                    </div>
+        <li key={member.id} className=" p-4 rounded-lg ">
+            <div className="flex flex-col items-center">
+                <img
+                    src={member.avatar}
+                    alt={member.fullName}
+                    className="w-20 h-20 mb-4"
+                />
+                <p className="text-center font-semibold">{member.fullName}</p>
+                <p className="text-center text-slate-400">
+                    {member.roles.join(", ")}
+                </p>
+                <div className="mt-4 flex gap-2">
+                    {member.contacts.map((contact) => {
+                        const keyContact = uuidv4();
+                        return getSocialBadge(contact, keyContact);
+                    })}
                 </div>
             </div>
-        </>
+        </li>
+        // <>
+        //     <div className="w-full max-w-xs bg-white border rounded-lg shadow">
+        //         <div className="flex flex-col items-center py-5">
+        //             <img
+        //                 className="w-24 h-24 mb-3 rounded-full shadow-lg"
+        //                 src={member.avatar}
+        //                 alt={member.fullName}
+        //             />
+        //             <h5 className="mb-1 text-xl font-medium text-gray-900 ">
+        //                 {member.fullName}
+        //             </h5>
+        //             <div className="flex gap-1 mb-3">
+        //                 {member.roles.map((role: RoleEnum) => getRole(role))}
+        //             </div>
+        //             <div className="flex gap-4">
+        //                 {member.contacts.map((social: ContactType) => {
+        //                     const keySocial = uuidv4();
+        //                     return (
+        //                         <div className="flex-none" key={keySocial}>
+        //                             {getSocial(social)}
+        //                         </div>
+        //                     );
+        //                 })}
+        //             </div>
+        //         </div>
+        //     </div>
+        // </>
     );
 };
 

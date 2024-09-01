@@ -24,13 +24,13 @@ export type BadgeProps = {
 };
 
 export enum RoleEnum {
-    PROFESSOR,
-    STUDENT,
-    RESEARCHER,
-    DEVELOPER,
-    MANAGER,
-    DESIGNER,
-    INTERDISCIPLINARY,
+    PROFESSOR = "Professor(a)",
+    STUDENT = "Estudante",
+    RESEARCHER = "Pesquisador(a)",
+    DEVELOPER = "Desenvolvedor(a)",
+    MANAGER = "Gerente",
+    DESIGNER = "Designer",
+    INTERDISCIPLINARY = "Equipe Interdisciplinar",
 }
 
 export type MemberType = {

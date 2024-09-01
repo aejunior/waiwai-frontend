@@ -27,6 +27,7 @@ export default {
         },
         extend: {
             colors: {
+                "topic-odd": "#F4F8FA",
                 current: "currentColor",
                 transparent: "transparent",
                 white: "#FFFFFF",
