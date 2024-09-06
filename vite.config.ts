@@ -21,6 +21,7 @@ export default defineConfig({
             "@/layouts": path.resolve(__dirname, "./src/components/Layouts"),
             "@/hooks": path.resolve(__dirname, "./src/hooks"),
             "@/contexts": path.resolve(__dirname, "./src/contexts"),
+            "@/services": path.resolve(__dirname, "./src/services"),
         },
     },
     server: {
