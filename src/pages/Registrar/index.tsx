@@ -1,79 +1,78 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import axios from 'axios';
-import AxiosClient from '@/services/registrar';
+import { useRegisterMutation } from './api/Mutations';
 
 const Registrar: React.FC = () => {
- 
+  const { mutate: register, isLoading } = useRegisterMutation();
   const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    });
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
 
-    const [errorMessage, setErrorMessage] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
-    const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-    const isValidPassword = (password: string) => {
-        const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return regex.test(password);
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      // console.log("Formulário submetido");
-  
-      if (formData.password !== formData.confirmPassword) {
-          setErrorMessage("As senhas não coincidem.");
-          return;
-      }
-  
-      if (!isValidPassword(formData.password)) {
-          setErrorMessage("A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um símbolo.");
-          return;
-      }
-  
-      setLoading(true);
-      setErrorMessage('');
-      setSuccessMessage('');
-      console.log("Formulário submetido");
-      try {
-          const axiosInstance = AxiosClient();
-          const { confirmPassword, ...dataSubmit } = formData;
-          console.log("Dados enviados:", dataSubmit);
-  
-          const response = await axiosInstance.post('/auth/signup', dataSubmit);
-      
-          console.log("Resposta da API:", response);
-  
-          setSuccessMessage('Conta criada com sucesso!');
-          setErrorMessage(null);
-      } catch (error) {
-          if (error.response) {
-              
-              console.log("Erro da API:", error.response); 
-              setErrorMessage(error.response.data.message || 'Erro ao criar a conta. Por favor, tente novamente.');
-          } else {
-              setErrorMessage('Erro ao criar a conta. Por favor, tente novamente.');
-          }
-          setSuccessMessage('');
-      } finally {
-          setLoading(false);
-      }
+  const isValidPassword = (password: string) => {
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
   };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage('As senhas não coincidem.');
+      return;
+    }
+
+    if (!isValidPassword(formData.password)) {
+      setErrorMessage('A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um símbolo.');
+      return;
+    }
+
+    const { confirmPassword, ...dataSubmit } = formData;
+
+    setErrorMessage('');
+    setSuccessMessage('');
+
+     register(dataSubmit, {
+      onSuccess: () => {
+        setSuccessMessage('Conta criada com sucesso!');
+      },
+      onError: (error: any) => {
+        if (error.response) {
+          switch (error.response.status) {
+            case 409:
+              setErrorMessage('Conflito: Já existe uma conta com esse e-mail.');
+              break;
+            case 400:
+              setErrorMessage('Requisição inválida. Verifique os dados fornecidos.');
+              break;
+            case 500:
+              setErrorMessage('Erro interno do servidor. Tente novamente mais tarde.');
+              break;
+            default:
+              setErrorMessage('Erro ao criar a conta. Por favor, tente novamente.');
+          }
+        } else {
+          setErrorMessage('Erro ao criar a conta. Por favor, tente novamente.');
+        }
+      }
+    });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
   return (
     <>
-     <section className="relative mt-28 mb-10 z-10 overflow-hidden">
+      <section className="relative mt-28 mb-10 overflow-hidden">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
@@ -168,8 +167,12 @@ const Registrar: React.FC = () => {
                     />
                   </div>
                   <div className="mb-6">
-                    <button className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
-                      Registrar
+                    <button 
+                      type="submit"
+                      className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Registrando..." : "Registrar"}
                     </button>
                   </div>
                 </form>

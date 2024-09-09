@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AuthContext from "./AuthContext"; // O arquivo que você criou antes
+import AuthContext from "./AuthContext";
 import { AuthContextType } from "../types";
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -12,7 +12,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
   const login = (data: AuthContextType["data"]) => {
     setAuthData(data);
-    // Você pode salvar os tokens no localStorage ou cookie, se necessário
   };
 
   const logout = () => {
@@ -22,7 +21,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       accessToken: null,
       refreshToken: null,
     });
-    // Também remova os tokens armazenados
   };
 
   return (
