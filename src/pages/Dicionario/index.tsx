@@ -1,5 +1,10 @@
-const Dicionario: React.FC = () => {
-    return <h1>Dicionário</h1>;
-};
+import { Banner, TableDicionario } from "@/pages/Dicionario/components";
+
+const Dicionario: React.FC = () => (
+    <>
+        <Banner />
+        <TableDicionario />
+    </>
+);
 
 export default Dicionario;

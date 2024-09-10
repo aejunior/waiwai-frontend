@@ -16,10 +16,8 @@ export interface Data {
 
 class TokenDecode {
     private decodedToken: JWT;
-    // private token: string;
 
     constructor(token: string) {
-        // this.token = token;
         try {
             if (token) this.decodedToken = jwtDecode(token);
             else throw new Error("Token está vazio.");

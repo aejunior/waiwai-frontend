@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import AuthContext from "../contexts/AuthContext";
 import { useContext } from "react";
+import AuthContext from "../contexts/AuthContext";
 
 const baseURL = import.meta.env.BASE_URL;
 

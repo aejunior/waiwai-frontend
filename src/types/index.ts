@@ -17,7 +17,7 @@ export type LoginDataType = {
 
 export type DataType = {
     subject: string | null;
-    name: string | null;
+    fullName: string | null;
     accessToken: string | null;
     refreshToken: string | null;
 };

@@ -4,7 +4,7 @@ import { AuthContextType } from "../types";
 const AuthContext = createContext<AuthContextType>({
     data: {
         subject: null,
-        name: null,
+        fullName: null,
         accessToken: null,
         refreshToken: null,
     },
