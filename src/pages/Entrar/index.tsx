@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLoginMutation } from './api/Mutations';
+import { useMessage } from './MessageProvider';
 
 const Entrar: React.FC = () => {
   const { mutate: login, isLoading } = useLoginMutation();

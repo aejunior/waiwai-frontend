@@ -2,7 +2,7 @@ import { useState } from "react";
 import AuthContext from "./AuthContext";
 import { AuthContextType } from "../types";
 
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [authData, setAuthData] = useState<AuthContextType["data"]>({
     subject: null,
     name: null,
@@ -30,4 +30,4 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   );
 };
 
-export default AuthProvider;
+export default ContextProvider;

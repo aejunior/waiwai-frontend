@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
 import Header from "@/components/Layouts/Header";
 import Footer from "@/components/Layouts/Footer";
-import MessageBox from "../MessageBox";
+import Message from "../Message";
 const MainLayout: React.FC = () => {
     return (
         <>
             <Header />
-            {/* <MessageBox /> */}
+            <Message/>
             <main>
                 <Outlet />
             </main>
