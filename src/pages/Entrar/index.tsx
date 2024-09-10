@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLoginMutation } from './api/Mutations';
-import { useMessage } from './MessageProvider';
 
 const Entrar: React.FC = () => {
   const { mutate: login, isLoading } = useLoginMutation();
@@ -26,30 +25,7 @@ const Entrar: React.FC = () => {
     setErrorMessage('');
     setSuccessMessage('');
 
-    login(formData, {
-      onSuccess: () => {
-        setSuccessMessage('Login realizado com sucesso!');
-      },
-      onError: (error: any) => {
-        if (error.response) {
-          switch (error.response.status) {
-            case 401:
-              setErrorMessage('Credenciais inválidas. Verifique seu e-mail e senha.');
-              break;
-            case 400:
-              setErrorMessage('Requisição inválida. Verifique os dados fornecidos.');
-              break;
-            case 500:
-              setErrorMessage('Erro interno do servidor. Tente novamente mais tarde.');
-              break;
-            default:
-              setErrorMessage('Erro ao realizar o login. Por favor, tente novamente.');
-          }
-        } else {
-          setErrorMessage('Erro ao realizar o login. Por favor, tente novamente.');
-        }
-      }
-    });
+    login(formData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

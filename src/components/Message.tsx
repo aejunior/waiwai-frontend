@@ -1,14 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMessage } from '@/contexts/MessageProvider';
 
 const Message = () => {
-  const { message, color } = useMessage();
+  const { message, color, setMessage, setColor } = useMessage();
+  const [showMessage, setShowMessage] = useState(false);
 
-  if (!message) return null;
+  useEffect(() => {
+    if (message) {
+      setShowMessage(true);
+
+      const hideTimer = setTimeout(() => {
+        setShowMessage(false);
+        const clearTimer = setTimeout(() => {
+          setMessage('');
+          setColor('');
+        }, 300);
+
+        return () => clearTimeout(clearTimer);
+      }, 3000);
+
+      return () => clearTimeout(hideTimer);
+    }
+  }, [message, setMessage, setColor]);
 
   return (
-    <div style={{ backgroundColor: color, padding: '10px', borderRadius: '5px' }}>
-      <p>{message}</p>
+    <div
+      className={`fixed top-0 w-full flex justify-center items-center z-20 mt-24 transition-opacity duration-300 ease-in-out ${showMessage ? 'opacity-100' : 'opacity-0'}`}
+    >
+      <div
+        className={`max-w-screen-xl w-full p-4 shadow-lg rounded-md text-center transition-transform duration-500 ease-in-out ${showMessage ? 'translate-y-0' : '-translate-y-10'} ${color}`}
+      >
+        <p className="text-lg font-semibold">
+          {message}
+        </p>
+      </div>
     </div>
   );
 };

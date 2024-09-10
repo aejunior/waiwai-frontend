@@ -39,30 +39,7 @@ const Registrar: React.FC = () => {
     setErrorMessage('');
     setSuccessMessage('');
 
-     register(dataSubmit, {
-      onSuccess: () => {
-        setSuccessMessage('Conta criada com sucesso!');
-      },
-      onError: (error: any) => {
-        if (error.response) {
-          switch (error.response.status) {
-            case 409:
-              setErrorMessage('Conflito: Já existe uma conta com esse e-mail.');
-              break;
-            case 400:
-              setErrorMessage('Requisição inválida. Verifique os dados fornecidos.');
-              break;
-            case 500:
-              setErrorMessage('Erro interno do servidor. Tente novamente mais tarde.');
-              break;
-            default:
-              setErrorMessage('Erro ao criar a conta. Por favor, tente novamente.');
-          }
-        } else {
-          setErrorMessage('Erro ao criar a conta. Por favor, tente novamente.');
-        }
-      }
-    });
+     register(dataSubmit);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

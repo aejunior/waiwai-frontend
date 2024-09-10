@@ -1,35 +1,59 @@
-import AxiosClient from "@/services/register";
+import AxiosClient from "@/services/AxiosClient";
 import { useMutation } from "@tanstack/react-query";
+import { useMessage } from '@/contexts/MessageProvider';
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "@/contexts/AuthContext";
 
 export const useLoginMutation = () => {
   const axios = AxiosClient();
+  const { setMessage, setColor } = useMessage();
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: async (loginData: {
       email: string;
       password: string;
     }) => await axios.post('/auth/signin', loginData),
     onSuccess: (response) => {
-      return response.data;
+      const { access_token, refresh_token} = response.data;
+
+      login({
+        subject: null, 
+        name: null,   
+        accessToken: access_token,
+        refreshToken: refresh_token,
+      });
+
+      setMessage('Login realizado com sucesso!');
+      setColor('bg-success');
+      navigate('/');
     },
     onError: (error: any) => {
       if (error.response) {
         switch (error.response.status) {
           case 401:
-            console.error('Credenciais inválidas. Verifique seu e-mail e senha.');
+            setMessage('Credenciais inválidas. Verifique seu e-mail e senha.');
+            setColor('bg-alert');
             break;
           case 400:
-            console.error('Requisição inválida. Verifique os dados fornecidos.');
+            setMessage('Requisição inválida. Verifique os dados fornecidos.');
+            setColor('bg-alert');
             break;
           case 500:
-            console.error('Erro interno do servidor. Tente novamente mais tarde.');
+            setMessage('Erro interno do servidor. Tente novamente mais tarde.');
+            setColor('bg-alert');
             break;
           default:
-            console.error('Erro ao fazer login. Por favor, tente novamente.');
+            setMessage('Erro ao fazer login. Por favor, tente novamente.');
+            setColor('bg-alert');
         }
       } else {
-        console.error('Erro ao fazer login. Por favor, tente novamente.');
+        setMessage('Erro ao fazer login. Por favor, tente novamente.');
+        setColor('bg-alert');
       }
     },
   });
+  return mutation;
 };

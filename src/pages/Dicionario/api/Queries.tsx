@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import AxiosClient from '@/services/register';
+import AxiosClient from '@/services/AxiosClient';
 
 interface Word {
   id: number;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AuthContext from "./AuthContext";
 import { AuthContextType } from "../types";
+import { useContext } from "react";
 
 const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [authData, setAuthData] = useState<AuthContextType["data"]>({

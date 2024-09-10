@@ -37,6 +37,6 @@ const baseURL = import.meta.env.VITE_BASE_URL;
     //     }
     // );
     // return AxiosInstance;
-};
+// };
 
 // export default AxiosClient;
