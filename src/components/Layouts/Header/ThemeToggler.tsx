@@ -1,5 +1,5 @@
+import { ThemeContext } from "@/contexts_test";
 import { EnumTheme, ThemeContextType } from "@/types/themeTypes";
-import { ThemeContext } from "@/contexts";
 import { useContext } from "react";
 
 const ThemeToggler = () => {

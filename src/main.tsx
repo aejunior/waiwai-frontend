@@ -1,13 +1,9 @@
-import ReactDOM from 'react-dom/client';
-import AppProvider from './contexts/AppProvider';
-import App from '@/App';
-import ContextProvider from './contexts_test/ContextProvider';
-ReactDOM.createRoot(document.getElementById('root')!).render(
-<ContextProvider>
+import App from "@/App";
+import ReactDOM from "react-dom/client";
+import ContextProvider from "./contexts/ContextProvider";
 
-
-  {/* <AppProvider> */}
-    <App />
-  {/* </AppProvider> */}
-  </ContextProvider>
+ReactDOM.createRoot(document.getElementById("root")!).render(
+    <ContextProvider>
+        <App />
+    </ContextProvider>
 );

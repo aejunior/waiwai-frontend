@@ -44,3 +44,10 @@ export type RouteType = {
 export type RoutesType = {
     [key: string]: RouteType;
 };
+
+export type MessageContextType = {
+    message: string;
+    color: string;
+    setMessage: (message: string) => void;
+    setColor: (color: string) => void;
+};

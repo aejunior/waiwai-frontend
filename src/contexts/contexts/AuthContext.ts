@@ -17,8 +17,8 @@ const AuthContext = createContext<AuthContextType>({
 
 // Função com os valores de retorno
 const useAuthContextValue = () => {
-  const [token, setToken] = useSessionStorage<string>("authToken", "");
-  const [refreshToken, setRefreshToken] = useSessionStorage<string>("refreshToken", "");
+  const [token, setToken] = useSessionStorage<string | null>("authToken", "");
+  const [refreshToken, setRefreshToken] = useSessionStorage<string | null>("refreshToken", "");
 
   const [authData, setAuthData] = useState<AuthContextDataType>({
     subject: null,

@@ -1,5 +1,5 @@
-import { AuthContext } from "@/contexts_test/contexts/AuthContext";
-import { MessageContext } from "@/contexts_test/contexts/MessageContext";
+import { AuthContext } from "@/contexts/contexts/AuthContext";
+import { MessageContext } from "@/contexts/contexts/MessageContext";
 import AxiosClient from "@/services/AxiosClient";
 import { useMutation } from "@tanstack/react-query";
 import { useContext } from "react";

@@ -34,7 +34,7 @@
             "@/icons": ["src/components/Icons"],
             "@/constraints": ["src/constraints"],
             "@/layouts": ["src/components/Layouts"],
-            "@/contexts": ["src/contexts"],
+            "@/contexts": ["src/contexts_test"],
             "@/hooks": ["src/hooks"]
         }
     },
