@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useMessage } from '@/contexts/MessageProvider';
+import React, { useEffect, useState, useContext } from 'react';
+import { MessageContext } from '@/contexts_test/contexts/MessageContext';
 
 const Message = () => {
-  const { message, color, setMessage, setColor } = useMessage();
+  const { message, color, setMessage, setColor } = useContext(MessageContext);
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
@@ -12,8 +12,8 @@ const Message = () => {
       const hideTimer = setTimeout(() => {
         setShowMessage(false);
         const clearTimer = setTimeout(() => {
-          setMessage('');
-          setColor('');
+          setMessage(''); 
+          setColor(''); 
         }, 300);
 
         return () => clearTimeout(clearTimer);

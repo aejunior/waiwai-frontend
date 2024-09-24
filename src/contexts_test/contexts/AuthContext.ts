@@ -1,41 +1,73 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { DataType as AuthContextDataType, AuthContextType } from "../../types";
+import TokenDecode from "@/utils/token";
+import useSessionStorage from "@/hooks/useSessionStorage";
 
-//criacao do contexto
+// Criação do contexto
 const AuthContext = createContext<AuthContextType>({
-    data: {
-        subject: null,
-        name: null,
-        accessToken: null,
-        refreshToken: null,
-    },
-    login: () => {},
-    logout: () => {},
+  data: {
+    subject: null,
+    name: null,
+    accessToken: null,
+    refreshToken: null,
+  },
+  login: () => {},
+  logout: () => {},
 });
 
-//funcao com os valores de retorno
+// Função com os valores de retorno
 const useAuthContextValue = () => {
-    const [authData, setAuthData] = useState<AuthContextDataType>({
+  const [token, setToken] = useSessionStorage<string>("authToken", "");
+  const [refreshToken, setRefreshToken] = useSessionStorage<string>("refreshToken", "");
+
+  const [authData, setAuthData] = useState<AuthContextDataType>({
+    subject: null,
+    name: null,
+    accessToken: null,
+    refreshToken: null,
+  });
+  useEffect(() => {
+    if (token) {
+
+      try {
+        const decodedToken = new TokenDecode(token);
+
+        setAuthData({
+          subject: decodedToken.getEmail, 
+          name: decodedToken.getName,
+          accessToken: token,
+          refreshToken: refreshToken, 
+        });
+
+      } catch (error) {
+        console.error("Erro ao decodificar o token", error);
+      }
+    } else {
+      setAuthData({
         subject: null,
         name: null,
         accessToken: null,
         refreshToken: null,
+      });
+    }
+  }, [token]);
+
+  const login = (data: AuthContextDataType) => {
+    setToken(data.accessToken);
+    setRefreshToken(data.refreshToken)
+  };
+
+  const logout = () => {
+    setToken("");
+    setAuthData({
+      subject: null,
+      name: null,
+      accessToken: null,
+      refreshToken: null,
     });
+  };
 
-    const login = (data: AuthContextDataType) => {
-        setAuthData(data);
-    };
-
-    const logout = () => {
-        setAuthData({
-            subject: null,
-            name: null,
-            accessToken: null,
-            refreshToken: null,
-        });
-    };
-
-    return { data: authData, login, logout };
+  return { data: authData, login, logout };
 };
 
 export { AuthContext, useAuthContextValue };

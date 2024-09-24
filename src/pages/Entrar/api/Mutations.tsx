@@ -1,13 +1,13 @@
 import AxiosClient from "@/services/AxiosClient";
 import { useMutation } from "@tanstack/react-query";
-import { useMessage } from '@/contexts/MessageProvider';
+import { MessageContext } from "@/contexts_test/contexts/MessageContext";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import AuthContext from "@/contexts/AuthContext";
+import { AuthContext } from "@/contexts_test/contexts/AuthContext";
 
 export const useLoginMutation = () => {
   const axios = AxiosClient();
-  const { setMessage, setColor } = useMessage();
+  const { setMessage, setColor } = useContext(MessageContext);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
