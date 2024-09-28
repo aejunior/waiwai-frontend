@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 
-const baseURL = import.meta.env.BASE_URL;
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const AxiosClient = () => {
     const authContext = useContext(AuthContext);

@@ -1,7 +1,7 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Dicionario, Entrar, Registrar, Inicio } from "@/pages";
 import { MainLayout } from "@/components/Layouts";
 import { pathConstants } from "@/constraints";
+import { Dicionario, Entrar, Inicio, Registrar } from "@/pages";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export default function Routes() {
     const routesForPublic = [

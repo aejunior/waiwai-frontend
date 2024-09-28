@@ -1,5 +1,0 @@
-FROM node:20-alpine
-WORKDIR /home/node/waiwai-frontend/
-RUN yarn 
-ENTRYPOINT ["yarn", "dev"]
-EXPOSE 3000

@@ -1,101 +1,80 @@
 import Topic from "@/components/Topic";
-import type { TableProps } from "antd";
-import { Space, Table, Tag } from "antd";
-import { useEffect } from "react";
-import { useInView } from "react-intersection-observer";
-import { useGetWordListInfiniteQuery } from "../api/Queries";
+import { CategoryType, MeaningType, WordType } from "@/types/apiResultTypes";
+import { Table, TableColumnsType } from "antd";
+import { Link } from "react-router-dom";
 
-interface DataType {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-    tags: string[];
-}
+type TableDicionarioProps = {
+    dataSource: WordType[];
+};
 
-const columns: TableProps<DataType>["columns"] = [
-    {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <a>{text}</a>,
-    },
-    {
-        title: "Age",
-        dataIndex: "age",
-        key: "age",
-    },
-    {
-        title: "Address",
-        dataIndex: "address",
-        key: "address",
-    },
-    {
-        title: "Tags",
-        key: "tags",
-        dataIndex: "tags",
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? "geekblue" : "green";
-                    if (tag === "loser") {
-                        color = "volcano";
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: "Action",
-        key: "action",
-        render: (_, record) => (
-            <Space size="middle">
-                <a>Invite {record.name}</a>
-                <a>Delete</a>
-            </Space>
-        ),
-    },
-];
+type DataType = {
+    key: React.Key;
+    id: number;
+    word: string;
+    categories: CategoryType[];
+    meanings: MeaningType[];
+};
 
-const data: DataType[] = [
-    {
-        key: "1",
-        name: "John Brown",
-        age: 32,
-        address: "New York No. 1 Lake Park",
-        tags: ["nice", "developer"],
-    },
-    {
-        key: "2",
-        name: "Jim Green",
-        age: 42,
-        address: "London No. 1 Lake Park",
-        tags: ["loser"],
-    },
-    {
-        key: "3",
-        name: "Joe Black",
-        age: 32,
-        address: "Sydney No. 1 Lake Park",
-        tags: ["cool", "teacher"],
-    },
-];
+type ExpandedDataType = {
+    key: React.Key;
+    meaningPt: string;
+    meaningWw: string;
+};
 
-const TableDicionario: React.FC = () => {
-    const { ref, inView } = useInView();
+const TableDicionario: React.FC<TableDicionarioProps> = ({ dataSource }) => {
+    const dataTable: DataType[] = dataSource.map((item) => {
+        return {
+            key: item.id,
+            id: item.id,
+            word: item.word,
+            categories: item.categories,
+            meanings: item.meanings,
+        };
+    });
 
-    const { data, hasNextPage, isPending, fetchNextPage } =
-        useGetWordListInfiniteQuery(16);
-    useEffect(() => {
-        if (inView && hasNextPage) {
-            fetchNextPage();
-        }
-    }, [fetchNextPage, inView, hasNextPage, data]);
+    // const expandedRowRender = () => {
+    //     const columns: TableColumnsType<ExpandedDataType> = [
+    //         { title: "Significado", dataIndex: "meaningPt", key: "meaningPt" },
+    //         { title: "Comentário", dataIndex: "meaningWw", key: "meaningWw" },
+    //     ]
+    // }
+
+    const expandedRowRender = (record: DataType) => {
+        const meanings = record.meanings.map((meaning) => {
+            return {
+                key: "meaning" + record.id + "-" + meaning.id.toString(),
+                meaningPt: meaning.meaning_pt,
+                meaningWw: meaning.meaning_ww,
+            };
+        });
+
+        const columns: TableColumnsType<ExpandedDataType> = [
+            { title: "Português", dataIndex: "meaningPt", key: "meaningPt" },
+            { title: "Wai Wai", dataIndex: "meaningWw", key: "meaningWw" },
+        ];
+
+        return (
+            <Table columns={columns} dataSource={meanings} pagination={false} />
+        );
+    };
+
+    const columns: TableColumnsType<DataType> = [
+        { title: "Palavra", dataIndex: "word", key: "word" },
+        {
+            title: "Ação",
+            key: "operation",
+            align: "center",
+            width: 200,
+            render: (record: WordType) => {
+                return (
+                    <Link to={"/dicionario/" + record.id.toString()}>
+                        Ver detalhes
+                    </Link>
+                );
+            },
+        },
+    ];
+
     return (
         <Topic
             idTopic="dicionario"
@@ -108,7 +87,15 @@ const TableDicionario: React.FC = () => {
                 língua materna Waiwai. Nosso objetivo é preservar a língua
                 indígena, incentivando o uso da língua e sua cultura.
             </p>
-            <Table className="w-full" dataSource={data} columns={columns} />
+            <Table
+                columns={columns}
+                className="w-full"
+                expandable={{
+                    expandedRowRender,
+                }}
+                dataSource={dataTable}
+                size="middle"
+            />
         </Topic>
     );
 };
