@@ -1,26 +1,39 @@
-import { EnumPermission } from "../types/index";
+import { User } from "../types/user";
 
-const permissionHierarchy = [
-  EnumPermission.GUEST,
-  EnumPermission.USER,
-  EnumPermission.ADMIN,
-];
+export type Role = User["permission"];
+
+const roleHierarchy: Record<Role, number> = {
+  ["ADMIN"]: 3,
+  ["USER"]: 2,
+  ["GUEST"]: 1,
+};
 
 /**
- * Verifica se a permissão do usuário é suficiente para acessar o recurso.
- * @param userPermission A permissão atual do usuário (ou null se não logado)
- * @param requiredPermission A permissão exigida para acessar o recurso
- * @returns true se o usuário pode acessar, false se não
+ * Verifica se um usuário tem a permissão necessária para acessar um recurso.
+ * * @param userRole O papel do usuário que está tentando acessar.
+ * @param requiredRole O papel mínimo necessário para o acesso.
+ * @returns {boolean} Retorna 'true' se o nível do usuário for maior ou igual ao nível exigido.
  */
-export default function hasPermission(
-  userPermission: EnumPermission | null,
-  requiredPermission: EnumPermission
-): boolean {
-  // Se o usuário não estiver logado, tratamos como GUEST (Pode repensar no futuro)
-  const effectivePermission = userPermission ?? EnumPermission.GUEST;
-
-  const userLevel = permissionHierarchy.indexOf(effectivePermission);
-  const requiredLevel = permissionHierarchy.indexOf(requiredPermission);
+export function hasPermission(userRole: Role, requiredRole: Role): boolean {
+  const userLevel = roleHierarchy[userRole] ?? 0;
+  const requiredLevel = roleHierarchy[requiredRole] ?? 0;
 
   return userLevel >= requiredLevel;
+}
+
+/**
+ * Verifica se um usuário tem a permissão necessária para atuar em outro usuario.
+ * @param userSourceRole Usuario que está tentando atuar.
+ * @param userTargetRole Usuario que esta recebendo a ação.
+ * @returns {boolean} Retorna 'true' se o nivel do usuario da ação for maior do que o usuario alvo.
+ */
+
+export function hierarchyPositionCheck(
+  userSourceRole: Role,
+  userTargetRole: Role
+): boolean {
+  const userSourceLevel = roleHierarchy[userSourceRole] ?? 0;
+  const userTargetLevel = roleHierarchy[userTargetRole] ?? 0;
+
+  return userSourceLevel <= userTargetLevel;
 }

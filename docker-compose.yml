@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Ambiente de Desenvolvimento
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dicionario-wai-wai-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ./.env
+
+  # Ambiente de Produção
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: dicionario-wai-wai-prod
+    ports:
+      - "8080:80"

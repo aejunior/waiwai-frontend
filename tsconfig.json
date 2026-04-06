@@ -1,47 +1,7 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "target": "es2022",
-        "useDefineForClassFields": true,
-        "lib": ["ES2020", "DOM", "DOM.Iterable"],
-        "module": "ESNext",
-        "skipLibCheck": true,
-
-        /* Bundler mode */
-        "moduleResolution": "node",
-        // "allowImportingTsExtensions": true,
-
-        "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx",
-
-        /* Linting */
-        "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true,
-
-        /* Paths */
-        "paths": {
-            "@/*": ["src/*"],
-            "@/utils/*": ["src/utils/*"],
-            "@/mocks/*": ["src/mocks/*"],
-            "@/pages/*": ["src/pages/*"],
-            "@/types/*": ["src/types/*"],
-            "@/assets/*": ["src/assets/*"],
-            "@/components/*": ["src/components/*"],
-            "@/icons": ["src/components/Icons"],
-            "@/constraints": ["src/constraints"],
-            "@/layouts": ["src/components/Layouts"],
-            "@/contexts": ["src/contexts"],
-            "@/hooks": ["src/hooks"],
-            "@/api": ["src/api"]
-        }
-    },
-    "include": ["src"],
-    "exclude": ["src/sample"],
-    "references": [{ "path": "./tsconfig.node.json" }],
-    "lib": ["WebWorker"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }
