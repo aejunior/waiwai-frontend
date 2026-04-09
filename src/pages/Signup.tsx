@@ -13,12 +13,12 @@ export function Signup() {
 
   const signUpMutation = useMutation({
     mutationFn: async (data: SignUpRequest) => {
-      const response = await api.post<AuthResponse>("/auth/signup", data);
+      const response = await api.post<{ data: AuthResponse }>("/auth/signup", data);
       return response.data;
     },
     onSuccess: (data) => {
-      login(data.access_token);
-      localStorage.setItem("refresh_token", data.refresh_token);
+      login(data.data.access_token);
+      localStorage.setItem("refresh_token", data.data.refresh_token);
       message.success("Conta criada com sucesso!");
       navigate("/");
     },

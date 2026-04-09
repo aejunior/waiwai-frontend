@@ -19,7 +19,9 @@ const { Header, Content, Footer } = Layout;
 
 export function AppLayout() {
   const navigate = useNavigate();
-  const { isAuthenticated, user, logout } = useAuthStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
   const isHeaderVisible = useScrollDirection();
 
   const {

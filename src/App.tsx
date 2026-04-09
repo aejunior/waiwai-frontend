@@ -27,12 +27,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const isInitialized = useAuthStore((state) => state.isInitialized);
-
-  if (!isInitialized) {
-    return null;
-  }
-
   return (
     <ConfigProvider
       locale={ptBR}
@@ -80,7 +74,7 @@ function App() {
                 <Route
                   path="/admin/categories"
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredRole="ADMIN">
                       <AdminCategories />
                     </ProtectedRoute>
                   }
@@ -88,7 +82,7 @@ function App() {
                 <Route
                   path="/admin/references"
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredRole="ADMIN">
                       <AdminReferences />
                     </ProtectedRoute>
                   }
@@ -96,7 +90,7 @@ function App() {
                 <Route
                   path="/admin/users"
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredRole="ADMIN">
                       <AdminUsers />
                     </ProtectedRoute>
                   }
@@ -104,7 +98,7 @@ function App() {
                 <Route
                   path="/admin/review"
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredRole="ADMIN">
                       <AdminReviewQueue />
                     </ProtectedRoute>
                   }
