@@ -125,7 +125,10 @@ export function WordDetail() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["word", word_id] });
-      message.success("Palavra atualizada!");
+      const msg = isAdmin 
+        ? "Palavra atualizada!" 
+        : "Palavra atualizada! Ela foi enviada novamente para revisão.";
+      message.success(msg);
       setEditWordModalOpen(false);
     },
     onError: (error: Error) => {
