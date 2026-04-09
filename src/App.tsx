@@ -14,6 +14,7 @@ import { WordForm } from "./pages/WordForm";
 import { AdminCategories } from "./pages/AdminCategories";
 import { AdminReferences } from "./pages/AdminReferences";
 import { AdminUsers } from "./pages/AdminUsers";
+import { AdminReviewQueue } from "./pages/AdminReviewQueue";
 import { useAuthStore } from "./store/authStore";
 import { AboutUs } from "./pages/AboutUs";
 
@@ -98,6 +99,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <AdminUsers />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/review"
+                  element={
+                    <ProtectedRoute>
+                      <AdminReviewQueue />
                     </ProtectedRoute>
                   }
                 />

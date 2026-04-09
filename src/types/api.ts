@@ -25,6 +25,7 @@ export interface WordPublic {
   phonemic: string | null;
   status: WordStatus;
   categories: Category[];
+  user: UserPublic;
 }
 
 export interface WordDetails extends WordPublic {
@@ -144,4 +145,12 @@ export interface ValidationErrorDetail {
 
 export interface ApiResponseError {
   detail: ApiResponseErrorMessage | ValidationErrorDetail[];
+}
+
+export interface ParamsWordQuery {
+  page?: number;
+  page_size?: number;
+  q?: string;
+  starts_with?: string;
+  status?: WordStatus;
 }

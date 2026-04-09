@@ -57,6 +57,11 @@ export function AppLayout() {
             label: <Link to="/admin/users">Gerenciar Usuários</Link>,
             icon: <TeamOutlined />,
           },
+          {
+            key: "admin-review",
+            label: <Link to="/admin/review">Fila de Revisão</Link>,
+            icon: <BookOutlined />,
+          },
         ]
       : []),
     {
