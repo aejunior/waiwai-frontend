@@ -1,5 +1,12 @@
-.vscode
-dist
+# Ignorar dependências do Node.js, pois elas serão instaladas dentro do contêiner
 node_modules
-package-lock.json
-README.md
+
+# Ignorar arquivos de log
+npm-debug.log
+
+# Ignorar arquivos específicos do ambiente de desenvolvimento
+.env
+.DS_Store
+
+# Ignorar diretório de build, pois ele será gerado dentro do contêiner
+dist

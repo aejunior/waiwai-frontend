@@ -1,109 +1,90 @@
-import { EnvelopeIcon, GitHubIcon, LattesIcon, LinkedInIcon } from "@/icons";
+import { Card, Avatar, Tooltip } from "antd";
+import {
+  MailOutlined,
+  LinkedinFilled,
+  GithubFilled,
+  ReadOutlined,
+} from "@ant-design/icons";
+import { ContactType, MemberType, SocialEnum } from "../types/memberTypes";
 
-import { ContactType, MemberType, SocialEnum } from "@/types/memberTypes";
+function getSocialLink(contact: ContactType) {
+  const iconProps = { className: "text-xl", key: contact.typeContact };
 
-import { v4 as uuidv4 } from "uuid";
-
-function getSocialBadge(social: ContactType, key: string): React.ReactNode {
-    switch (social.typeContact) {
-        case SocialEnum.EMAIL:
-            return (
-                <a href={`mailto:${social.value}`} key={key}>
-                    <EnvelopeIcon />
-                </a>
-            );
-        case SocialEnum.GITHUB:
-            return (
-                <a
-                    href={social.value}
-                    key={key}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center text-slate-400"
-                >
-                    <GitHubIcon />
-                </a>
-            );
-        case SocialEnum.LINKEDIN:
-            return (
-                <a
-                    href={social.value}
-                    key={key}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center text-slate-400"
-                >
-                    <LinkedInIcon />
-                </a>
-            );
-        case SocialEnum.LATTES:
-            return (
-                <a
-                    href={social.value}
-                    key={key}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center text-slate-400"
-                >
-                    <LattesIcon />
-                </a>
-            );
-    }
+  switch (contact.typeContact) {
+    case SocialEnum.EMAIL:
+      return (
+        <Tooltip title={`Email: ${contact.value}`}>
+          <a
+            href={`mailto:${contact.value}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <MailOutlined {...iconProps} />
+          </a>
+        </Tooltip>
+      );
+    case SocialEnum.LINKEDIN:
+      return (
+        <Tooltip title="LinkedIn">
+          <a href={contact.value} target="_blank" rel="noopener noreferrer">
+            <LinkedinFilled {...iconProps} />
+          </a>
+        </Tooltip>
+      );
+    case SocialEnum.GITHUB:
+      return (
+        <Tooltip title="GitHub">
+          <a href={contact.value} target="_blank" rel="noopener noreferrer">
+            <GithubFilled {...iconProps} />
+          </a>
+        </Tooltip>
+      );
+    case SocialEnum.LATTES:
+      return (
+        <Tooltip title="Currículo Lattes">
+          <a href={contact.value} target="_blank" rel="noopener noreferrer">
+            <ReadOutlined {...iconProps} />
+          </a>
+        </Tooltip>
+      );
+    default:
+      return null;
+  }
 }
 
-type MemberCardProps = {
-    member: MemberType;
-};
+interface MemberCardProps {
+  member: MemberType;
+}
 
-const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
-    return (
-        <li key={member.id} className=" p-4 rounded-lg ">
-            <div className="flex flex-col items-center">
-                <img
-                    src={member.avatar}
-                    alt={member.fullName}
-                    className="w-20 h-20 mb-4"
-                />
-                <p className="text-center font-semibold">{member.fullName}</p>
-                <p className="text-center text-slate-400">
-                    {member.roles.join(", ")}
-                </p>
-                <div className="mt-4 flex gap-2">
-                    {member.contacts.map((contact) => {
-                        const keyContact = uuidv4();
-                        return getSocialBadge(contact, keyContact);
-                    })}
-                </div>
+export function MemberCard({ member }: MemberCardProps) {
+  const socialActions = member.contacts.map(getSocialLink).filter(Boolean); // Filtra contatos não mapeados
+
+  return (
+    <Card
+      hoverable
+      actions={socialActions.length > 0 ? socialActions : undefined}
+      className="text-center shadow-md hover:shadow-lg transition-shadow"
+    >
+      <div className="flex flex-col items-center">
+        <Avatar
+          size={128}
+          src={member.avatar}
+          alt={member.fullName}
+          className="mb-4 border-2 border-gray-100"
+        />
+        <Card.Meta
+          title={
+            <span className="font-semibold text-base text-slate-800">
+              {member.fullName}
+            </span>
+          }
+          description={
+            <div className="flex flex-wrap justify-center gap-1 mt-2 text-xs">
+              {member.roles.join(", ")}
             </div>
-        </li>
-        // <>
-        //     <div className="w-full max-w-xs bg-white border rounded-lg shadow">
-        //         <div className="flex flex-col items-center py-5">
-        //             <img
-        //                 className="w-24 h-24 mb-3 rounded-full shadow-lg"
-        //                 src={member.avatar}
-        //                 alt={member.fullName}
-        //             />
-        //             <h5 className="mb-1 text-xl font-medium text-gray-900 ">
-        //                 {member.fullName}
-        //             </h5>
-        //             <div className="flex gap-1 mb-3">
-        //                 {member.roles.map((role: RoleEnum) => getRole(role))}
-        //             </div>
-        //             <div className="flex gap-4">
-        //                 {member.contacts.map((social: ContactType) => {
-        //                     const keySocial = uuidv4();
-        //                     return (
-        //                         <div className="flex-none" key={keySocial}>
-        //                             {getSocial(social)}
-        //                         </div>
-        //                     );
-        //                 })}
-        //             </div>
-        //         </div>
-        //     </div>
-        // </>
-    );
-};
-
-export default MemberCard;
+          }
+        />
+      </div>
+    </Card>
+  );
+}
