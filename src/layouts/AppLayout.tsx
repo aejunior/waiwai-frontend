@@ -8,8 +8,9 @@ import {
   MenuOutlined,
   TagsOutlined,
   LinkOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useScrollDirection } from "../hooks/useScrollDirection";
 import { hasPermission } from "../utils/permissions";
@@ -50,6 +51,11 @@ export function AppLayout() {
             label: "Gerenciar Referências",
             icon: <LinkOutlined />,
             onClick: () => navigate("/admin/references"),
+          },
+          {
+            key: "users",
+            label: <Link to="/admin/users">Gerenciar Usuários</Link>,
+            icon: <TeamOutlined />,
           },
         ]
       : []),

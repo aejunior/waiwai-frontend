@@ -1,9 +1,10 @@
-// Estado de aprovação de uma palavra – espelha o enum WordStatus do backend.
 export type WordStatus =
   | 'PENDING'
   | 'APPROVED'
   | 'REJECTED'
   | 'CHANGES_REQUESTED';
+
+export type PermissionType = 'GUEST' | 'USER' | 'ADMIN';
 
 export interface WordReview {
   id: number;
@@ -110,7 +111,19 @@ export interface AuthResponse {
     email: string;
     first_name: string;
     last_name: string;
+    permission?: PermissionType;
   };
+}
+
+export interface UserPublic {
+  id: number;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  email: string;
+  permission: PermissionType;
+  created_at?: string;
+  update_at?: string;
 }
 
 export interface ValidationErrorDetail {

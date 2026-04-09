@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Table, Button, Modal, Form, Input, Popconfirm, message } from "antd";
+import { Table, Button, Modal, Form, Input, Popconfirm, App } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
 import type { Category } from "../types/api";
 
 export function AdminCategories() {
+  const { message } = App.useApp();
   const queryClient = useQueryClient();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);

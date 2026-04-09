@@ -13,6 +13,7 @@ import { MyWords } from "./pages/MyWords";
 import { WordForm } from "./pages/WordForm";
 import { AdminCategories } from "./pages/AdminCategories";
 import { AdminReferences } from "./pages/AdminReferences";
+import { AdminUsers } from "./pages/AdminUsers";
 import { useAuthStore } from "./store/authStore";
 import { AboutUs } from "./pages/AboutUs";
 
@@ -89,6 +90,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <AdminReferences />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/users"
+                  element={
+                    <ProtectedRoute>
+                      <AdminUsers />
                     </ProtectedRoute>
                   }
                 />
