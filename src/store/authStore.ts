@@ -12,9 +12,9 @@ interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  isInitialized: boolean;
   login: (token: string) => void;
   logout: () => void;
-  initAuth: () => void;
 }
 
 const decodeAndSetUser = (token: string): User | null => {
@@ -37,10 +37,21 @@ const decodeAndSetUser = (token: string): User | null => {
   }
 };
 
+const getInitialState = () => {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    const user = decodeAndSetUser(token);
+    if (user) {
+      return { token, isAuthenticated: true, user, isInitialized: true };
+    }
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+  }
+  return { token: null, isAuthenticated: false, user: null, isInitialized: true };
+};
+
 export const useAuthStore = create<AuthState>((set, get) => ({
-  user: null,
-  token: null,
-  isAuthenticated: false,
+  ...getInitialState(),
   login: (token: string) => {
     const user = decodeAndSetUser(token);
     if (user) {
@@ -54,16 +65,5 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     set({ user: null, token: null, isAuthenticated: false });
-  },
-  initAuth: () => {
-    const token = localStorage.getItem("access_token");
-    if (token) {
-      const user = decodeAndSetUser(token);
-      if (user) {
-        set({ token, isAuthenticated: true, user });
-      } else {
-        get().logout();
-      }
-    }
   },
 }));

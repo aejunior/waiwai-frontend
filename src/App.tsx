@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConfigProvider, App as AntdApp } from "antd";
@@ -28,11 +27,11 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const initAuth = useAuthStore((state) => state.initAuth);
+  const isInitialized = useAuthStore((state) => state.isInitialized);
 
-  useEffect(() => {
-    initAuth();
-  }, [initAuth]);
+  if (!isInitialized) {
+    return null;
+  }
 
   return (
     <ConfigProvider

@@ -753,7 +753,6 @@ export function WordDetail() {
           <Form.Item
             name="phonemic"
             label="Fonética"
-            rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Input />
           </Form.Item>

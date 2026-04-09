@@ -74,7 +74,24 @@ export function Signup() {
             label="Senha"
             rules={[
               { required: true, message: "Por favor, insira sua senha!" },
-              { min: 6, message: "A senha deve ter no mínimo 6 caracteres!" },
+              { min: 8, message: "A senha deve ter no mínimo 8 caracteres!" },
+              { max: 32, message: "A senha deve ter no máximo 32 caracteres!" },
+              {
+                pattern: /[A-Z]/,
+                message: "A senha deve conter ao menos uma letra maiúscula!",
+              },
+              {
+                pattern: /[a-z]/,
+                message: "A senha deve conter ao menos uma letra minúscula!",
+              },
+              {
+                pattern: /[0-9]/,
+                message: "A senha deve conter ao menos um número!",
+              },
+              {
+                pattern: /[^a-zA-Z0-9]/,
+                message: "A senha deve conter ao menos um caractere especial!",
+              },
             ]}
           >
             <Input.Password prefix={<LockOutlined />} placeholder="Senha" />
