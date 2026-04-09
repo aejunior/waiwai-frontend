@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Form, Input, Select, Button, Card, message } from "antd";
+import { Form, Input, Select, Button, Card, message, Result } from "antd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../lib/axios";
@@ -9,6 +9,8 @@ import type {
   Category,
   WordDetails,
 } from "../types/api";
+import { hasPermission } from "../utils/permissions";
+import { useAuthStore } from "../store/authStore";
 
 export function WordForm() {
   const { word_id } = useParams<{ word_id: string }>();
@@ -16,6 +18,26 @@ export function WordForm() {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const isEditing = !!word_id;
+
+  const user = useAuthStore((state) => state.user);
+  const canCreate = hasPermission(user?.permission ?? "GUEST", "USER");
+
+  // Proteção de rota: GUESTs não podem criar nem editar palavras.
+  if (!canCreate) {
+    return (
+      <Result
+        status="403"
+        title="Acesso Negado"
+        subTitle="Você não tem permissão para criar ou editar palavras."
+        extra={
+          <Button type="primary" onClick={() => navigate("/")}>
+            Voltar para a home
+          </Button>
+        }
+      />
+    );
+  }
+
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],

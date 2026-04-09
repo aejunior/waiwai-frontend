@@ -38,6 +38,8 @@ import type {
   WordMeaning,
   Category,
   WordUpdate,
+  WordReviewCreate,
+  WordStatus,
 } from "../types/api";
 import { API_URL } from "../constains";
 import {
@@ -63,6 +65,7 @@ export function WordDetail() {
   const [editWordModalOpen, setEditWordModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [formWord] = Form.useForm();
+  const [formReview] = Form.useForm<WordReviewCreate>();
 
   const {
     mutate: editingMeaningMutation,
@@ -125,7 +128,21 @@ export function WordDetail() {
       message.success("Palavra atualizada!");
       setEditWordModalOpen(false);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
+      message.error(fnErrorMessage(error));
+    },
+  });
+
+  const addReviewMutation = useMutation({
+    mutationFn: async (data: WordReviewCreate) => {
+      await api.post(`/words/${word_id}/reviews`, data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["word", word_id] });
+      message.success("Revisão registrada com sucesso!");
+      formReview.resetFields();
+    },
+    onError: (error: Error) => {
       message.error(fnErrorMessage(error));
     },
   });
@@ -294,6 +311,17 @@ export function WordDetail() {
   const hasEdit =
     isAuthenticated && hasPermission(user?.permission || "GUEST", "USER");
 
+  const isAdmin = hasPermission(user?.permission || "GUEST", "ADMIN");
+  const isOwner = isAuthenticated && word?.user_id === user?.id;
+
+  /** Mapeia o status para a cor e o label do badge Ant Design. */
+  const statusConfig: Record<WordStatus, { color: string; label: string }> = {
+    APPROVED: { color: "success", label: "Aprovada" },
+    PENDING: { color: "warning", label: "Pendente de aprovação" },
+    REJECTED: { color: "error", label: "Rejeitada" },
+    CHANGES_REQUESTED: { color: "processing", label: "Alterações necessárias" },
+  };
+
   return (
     <div className="space-y-6">
       <Button
@@ -334,10 +362,18 @@ export function WordDetail() {
         {word.phonemic && (
           <p className="text-xl text-gray-600 mb-4">/{word.phonemic}/</p>
         )}
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-1 items-center">
           {word.categories?.map((cat) => (
             <Tag key={cat.id}>{cat.category}</Tag>
           ))}
+          {/* Badge de status – visível para o owner ou ADMIN */}
+          {(isOwner || isAdmin) && word.status !== "APPROVED" && (() => {
+            const cfg = statusConfig[word.status as WordStatus];
+            return <Tag color={cfg.color}>{cfg.label}</Tag>;
+          })()}
+          {word.status === "APPROVED" && (
+            <Tag color="success">Aprovada</Tag>
+          )}
         </div>
       </Card>
 
@@ -523,6 +559,86 @@ export function WordDetail() {
         )}
       </Card>
 
+      {/* --- Histórico de Revisões ---
+          Visível para: ADMIN (vê todas) e o próprio dono da palavra (vê as suas). */}
+      {(isAdmin || isOwner) && (
+        <Card title="Histórico de Revisões" loading={cardsLoading}>
+          {word.reviews?.length > 0 ? (
+            <List
+              dataSource={word.reviews}
+              renderItem={(review: import('../types/api').WordReview) => {
+                const cfg = statusConfig[review.status];
+                return (
+                  <List.Item key={review.id}>
+                    <div className="flex flex-col gap-1 w-full">
+                      <div className="flex items-center gap-2">
+                        <Tag color={cfg.color}>{cfg.label}</Tag>
+                        <Text type="secondary" className="text-xs">
+                          {new Date(review.created_at).toLocaleString("pt-BR")}
+                        </Text>
+                      </div>
+                      {review.comment && (
+                        <Text className="text-sm">{review.comment}</Text>
+                      )}
+                    </div>
+                  </List.Item>
+                );
+              }}
+            />
+          ) : (
+            <p className="text-gray-500">Nenhuma revisão registrada ainda.</p>
+          )}
+        </Card>
+      )}
+
+      {/* --- Painel de Revisão (exclusivo ADMIN) --- */}
+      {isAdmin && (
+        <Card title="Registrar Revisão">
+          <Form
+            form={formReview}
+            layout="vertical"
+            onFinish={(values: WordReviewCreate) =>
+              addReviewMutation.mutate(values)
+            }
+          >
+            <Form.Item
+              name="status"
+              label="Decisão"
+              rules={[{ required: true, message: "Selecione uma decisão" }]}
+            >
+              <Select
+                placeholder="Selecione o status"
+                options={[
+                  { label: "✅ Aprovar", value: "APPROVED" },
+                  { label: "❌ Rejeitar", value: "REJECTED" },
+                  {
+                    label: "✏️ Solicitar alterações",
+                    value: "CHANGES_REQUESTED",
+                  },
+                ]}
+              />
+            </Form.Item>
+            <Form.Item name="comment" label="Comentário (opcional)">
+              <Input.TextArea
+                rows={3}
+                maxLength={1000}
+                showCount
+                placeholder="Deixe um feedback para o autor..."
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={addReviewMutation.isPending}
+              >
+                Enviar revisão
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      )}
+
       <Modal
         title={editingMeaning ? "Editar Significado" : "Adicionar Significado"}
         width={800}
@@ -533,6 +649,7 @@ export function WordDetail() {
           form.resetFields();
         }}
         footer={null}
+
       >
         <Form form={form} onFinish={handleMeaningSubmit} layout="vertical">
           <Form.Item

@@ -6,6 +6,8 @@ import {
   LogoutOutlined,
   BookOutlined,
   MenuOutlined,
+  TagsOutlined,
+  LinkOutlined,
 } from "@ant-design/icons";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
@@ -35,6 +37,22 @@ export function AppLayout() {
       icon: <BookOutlined />,
       onClick: () => navigate("/me/words"),
     },
+    ...(hasPermission(user?.permission || "GUEST", "ADMIN")
+      ? [
+          {
+            key: "admin-categories",
+            label: "Gerenciar Categorias",
+            icon: <TagsOutlined />,
+            onClick: () => navigate("/admin/categories"),
+          },
+          {
+            key: "admin-references",
+            label: "Gerenciar Referências",
+            icon: <LinkOutlined />,
+            onClick: () => navigate("/admin/references"),
+          },
+        ]
+      : []),
     {
       key: "logout",
       label: "Sair",

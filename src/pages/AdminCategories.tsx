@@ -14,8 +14,8 @@ export function AdminCategories() {
   const { data: categories, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await api.get<Category[]>("/categories/");
-      return response.data;
+      const response = await api.get<{ data: Category[] }>("/categories/");
+      return response.data.data;
     },
   });
 
@@ -71,11 +71,14 @@ export function AdminCategories() {
 
   const handleEdit = (record: Category) => {
     setEditingId(record.id);
-    form.setFieldsValue({ name: record.category });
+    form.setFieldsValue({
+      category: record.category,
+      description: record.description,
+    });
     setModalOpen(true);
   };
 
-  const handleSubmit = (values: { name: string }) => {
+  const handleSubmit = (values: { category: string; description: string }) => {
     if (editingId) {
       updateMutation.mutate({ id: editingId, data: values });
     } else {
@@ -92,8 +95,13 @@ export function AdminCategories() {
     },
     {
       title: "Nome",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "category",
+      key: "category",
+    },
+    {
+      title: "Descrição",
+      dataIndex: "description",
+      key: "description",
     },
     {
       title: "Ações",
@@ -153,11 +161,19 @@ export function AdminCategories() {
       >
         <Form form={form} onFinish={handleSubmit} layout="vertical">
           <Form.Item
-            name="name"
+            name="category"
             label="Nome"
             rules={[{ required: true, message: "Campo obrigatório" }]}
           >
-            <Input />
+            <Input placeholder="Ex: Fauna, Flora, Objetos" />
+          </Form.Item>
+
+          <Form.Item
+            name="description"
+            label="Descrição"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Input.TextArea rows={3} placeholder="Breve descrição da categoria" />
           </Form.Item>
 
           <Form.Item>

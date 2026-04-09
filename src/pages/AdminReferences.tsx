@@ -14,13 +14,18 @@ export function AdminReferences() {
   const { data: references, isLoading } = useQuery({
     queryKey: ["references"],
     queryFn: async () => {
-      const response = await api.get<Reference[]>("/references/");
-      return response.data;
+      const response = await api.get<{ data: Reference[] }>("/references/");
+      return response.data.data;
     },
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: { name: string; description?: string }) => {
+    mutationFn: async (data: {
+      reference: string;
+      authors: string;
+      year: number;
+      url?: string;
+    }) => {
       await api.post("/references/", data);
     },
     onSuccess: () => {
@@ -40,7 +45,12 @@ export function AdminReferences() {
       data,
     }: {
       id: number;
-      data: { name?: string; description?: string };
+      data: {
+        reference: string;
+        authors: string;
+        year: number;
+        url?: string;
+      };
     }) => {
       await api.put(`/references/${id}`, data);
     },
@@ -72,13 +82,20 @@ export function AdminReferences() {
   const handleEdit = (record: Reference) => {
     setEditingId(record.id);
     form.setFieldsValue({
-      name: record.name,
-      description: record.description,
+      reference: record.reference,
+      authors: record.authors,
+      year: record.year,
+      url: record.url,
     });
     setModalOpen(true);
   };
 
-  const handleSubmit = (values: { name: string; description?: string }) => {
+  const handleSubmit = (values: {
+    reference: string;
+    authors: string;
+    year: number;
+    url?: string;
+  }) => {
     if (editingId) {
       updateMutation.mutate({ id: editingId, data: values });
     } else {
@@ -94,14 +111,33 @@ export function AdminReferences() {
       width: 80,
     },
     {
-      title: "Nome",
-      dataIndex: "name",
-      key: "name",
+      title: "Obra/Título",
+      dataIndex: "reference",
+      key: "reference",
     },
     {
-      title: "Descrição",
-      dataIndex: "description",
-      key: "description",
+      title: "Autores",
+      dataIndex: "authors",
+      key: "authors",
+    },
+    {
+      title: "Ano",
+      dataIndex: "year",
+      key: "year",
+      width: 100,
+    },
+    {
+      title: "URL",
+      dataIndex: "url",
+      key: "url",
+      render: (url: string) =>
+        url ? (
+          <a href={url} target="_blank" rel="noopener noreferrer">
+            Link
+          </a>
+        ) : (
+          "-"
+        ),
     },
     {
       title: "Ações",
@@ -161,16 +197,35 @@ export function AdminReferences() {
       >
         <Form form={form} onFinish={handleSubmit} layout="vertical">
           <Form.Item
-            name="name"
-            label="Nome"
+            name="reference"
+            label="Título da Referência"
             rules={[{ required: true, message: "Campo obrigatório" }]}
           >
-            <Input />
+            <Input placeholder="Ex: Dicionário WaiWai Vol 1" />
           </Form.Item>
 
-          <Form.Item name="description" label="Descrição">
-            <Input.TextArea rows={3} />
+          <Form.Item
+            name="authors"
+            label="Autores"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Input placeholder="Ex: Silva, J.; Santos, M." />
           </Form.Item>
+
+          <div className="flex gap-4">
+            <Form.Item
+              name="year"
+              label="Ano"
+              className="flex-1"
+              rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Input type="number" placeholder="2024" />
+            </Form.Item>
+
+            <Form.Item name="url" label="URL (opcional)" className="flex-[2]">
+              <Input placeholder="https://..." />
+            </Form.Item>
+          </div>
 
           <Form.Item>
             <Button

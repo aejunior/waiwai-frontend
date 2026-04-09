@@ -1,13 +1,35 @@
+// Estado de aprovação de uma palavra – espelha o enum WordStatus do backend.
+export type WordStatus =
+  | 'PENDING'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'CHANGES_REQUESTED';
+
+export interface WordReview {
+  id: number;
+  reviewer_id: number;
+  status: WordStatus;
+  comment: string | null;
+  created_at: string;
+}
+
+export interface WordReviewCreate {
+  status: WordStatus;
+  comment?: string;
+}
+
 export interface WordPublic {
   id: number;
   word: string;
   phonemic: string | null;
+  status: WordStatus;
   categories: Category[];
 }
 
 export interface WordDetails extends WordPublic {
   meanings: WordMeaning[];
   attachments: Attachment[];
+  reviews: WordReview[];
 }
 
 export interface WordMeaning {
@@ -22,6 +44,7 @@ export interface WordMeaning {
 export interface Category {
   id: number;
   category: string;
+  description: string;
 }
 
 export interface Reference {
