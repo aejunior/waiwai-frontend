@@ -28,15 +28,21 @@ export function AdminUsers() {
     },
     onError: (error: any) => {
       const detail = error.response?.data?.detail;
-      message.error(typeof detail === "string" ? detail : "Erro ao atualizar permissão");
+      const errorMsg = typeof detail === "string" ? detail : (detail?.msg || "Erro ao atualizar permissão");
+      message.error(errorMsg);
     },
   });
 
   const canDemote = (user: UserPublic) => {
     if (user.permission !== "ADMIN") return true;
-    if (!user.update_at) return false;
+    
+    // Se não houver update_at, assumimos que é uma promoção nova (deve permitir rebaixar)
+    if (!user.update_at) return true;
 
     const updatedAt = new Date(user.update_at);
+    // Verifica se a data é válida
+    if (isNaN(updatedAt.getTime())) return true;
+
     const now = new Date();
     const diffInHours = (now.getTime() - updatedAt.getTime()) / (1000 * 60 * 60);
     
